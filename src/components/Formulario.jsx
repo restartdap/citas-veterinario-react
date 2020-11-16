@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import uuid from 'uuid/v4';
 
 const Formulario = () => {
 
@@ -11,10 +12,10 @@ const Formulario = () => {
         sintomas: ""
     });
 
+    const [error, actualizarError] = useState(false);
+
     // Cada vez que el usuario escribe en un input
     const actualizarState = (e) => {
-        console.log(e.taget.name);
-        console.log(e.taget.value);
 
         actualizarCita({
             // Se tiene que agregar una copia del state, ya que se borra
@@ -29,11 +30,26 @@ const Formulario = () => {
     // Cuando el usuario envia el formulario
     const submitCita = (e) => {
         e.preventDefault();
-        alert("Enviando...");
 
         // Validaciones
+        if(
+           mascota.trim() === "" ||
+           propietario.trim() === "" ||
+           fecha.trim() === "" ||
+           hora.trim() === "" ||
+           sintomas.trim() === ""
+        ) {
+            actualizarError(true);
+            return;
+        }
+
+        console.log("Agregando...");
+
+        // Eliminar el mensaje previo de error
+        actualizarError(false);
 
         // Asignar un ID
+        cita.id = uuid();
 
         // Crear la cita
 
@@ -44,6 +60,15 @@ const Formulario = () => {
     return (
         <Fragment>
             <h2>Crear Cita</h2>
+
+            {
+                error
+                ?
+                <p className="alerta-error">Todos los campos son obligatorios</p>
+                :
+                null
+            }
+
             <form
                 onSubmit = {submitCita}
             >
