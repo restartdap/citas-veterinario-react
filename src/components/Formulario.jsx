@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import uuid from 'uuid/v4';
+import PropTypes from "prop-types";
 
-const Formulario = () => {
+const Formulario = ({crearCita}) => {
 
     // Crear state de citas
     const [cita, actualizarCita] = useState({
@@ -33,17 +34,15 @@ const Formulario = () => {
 
         // Validaciones
         if(
-           mascota.trim() === "" ||
-           propietario.trim() === "" ||
-           fecha.trim() === "" ||
-           hora.trim() === "" ||
-           sintomas.trim() === ""
+            mascota.trim() === "" ||
+            propietario.trim() === "" ||
+            fecha.trim() === "" ||
+            hora.trim() === "" ||
+            sintomas.trim() === ""
         ) {
             actualizarError(true);
             return;
         }
-
-        console.log("Agregando...");
 
         // Eliminar el mensaje previo de error
         actualizarError(false);
@@ -52,9 +51,16 @@ const Formulario = () => {
         cita.id = uuid();
 
         // Crear la cita
+        crearCita(cita);
 
         // Reiniciar el form
-        
+        actualizarCita({
+            mascota: "",
+            propietario: "",
+            fecha: "",
+            hora: "",
+            sintomas: ""
+        });
     }
 
     return (
@@ -122,5 +128,9 @@ const Formulario = () => {
         </Fragment>
     );
 };
+
+Formulario.propTypes = {
+    crearCita: PropTypes.func.isRequired
+}
 
 export default Formulario;
