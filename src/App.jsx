@@ -6,6 +6,9 @@ function App() {
 
   // Citas en Local Storage
   let citasIniciales = JSON.parse(localStorage.getItem("citas"));
+  if(!citasIniciales) {
+    citasIniciales = [];
+  }
 
   // Arreglo de Citas
   const [citas, guardarCitas] = useState(citasIniciales);
@@ -13,7 +16,7 @@ function App() {
   // Use Effect para realizar operaciones cuando el state cambia
   useEffect(() => {
     localStorage.setItem("citas", JSON.stringify(citas));
-  }, [citas]);
+  }, [citas, citasIniciales]);
 
   // Función que tome las citas actuales y agregue la nueva
   const crearCita = cita => { 
